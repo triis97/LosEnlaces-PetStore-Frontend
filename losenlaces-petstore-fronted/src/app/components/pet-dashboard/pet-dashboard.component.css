@@ -1,0 +1,9 @@
+tr:hover {
+    cursor: pointer;
+}
+
+.fab-button {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+}

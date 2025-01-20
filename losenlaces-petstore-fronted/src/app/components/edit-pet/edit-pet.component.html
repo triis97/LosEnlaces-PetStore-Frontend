@@ -1,0 +1,24 @@
+<div>
+    <h1 style="margin-left: 60px;">{{ headerText }}</h1>
+    <div class="flex-center">
+        <form [formGroup]="editPetForm" (ngSubmit)="onSubmit()" class="form-container">
+            <mat-form-field class="example-full-width">
+                <mat-label>Favorite food</mat-label>
+                <input matInput placeholder="Ex. Pizza" value="Sushi" formControlName="field_1">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Favorite food</mat-label>
+                <input matInput placeholder="Ex. Pizza" value="Sushi"  formControlName="field_2">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Favorite food</mat-label>
+                <mat-select formControlName="favoriteFood">
+                    @for (food of foods; track food) {
+                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <button mat-stroked-button type="submit">{{submitText}}</button>
+        </form>
+    </div>
+</div>

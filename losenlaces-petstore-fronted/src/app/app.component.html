@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" style="padding: 0px 50px 0px 50px;">
+  <a routerLink="/home" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <img src="assets/logo/pet-shop.png" alt="Home" style="height: 40px; margin-right: 10px;">
+  </a>
+  <span class="brand-name mat-accent">Pet Shop</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/home">Home</button>
+  <button mat-button routerLink="/edit-pet">Add Pet</button>
+  <button mat-button>Contact</button>
+</mat-toolbar>
+<div style="margin-top: 20px;">
+  <router-outlet></router-outlet>
+</div>
