@@ -13,8 +13,12 @@ export class PetService {
 
   constructor(private http: HttpClient) { }
 
+  savePet(pet: Pet): Observable<Pet> {
+    return this.http.post<Pet>(`${this.apiUrl}/pet`, pet);
+  }
+
   getPets(): Observable<Pet[]> {
-    return this.http.get<Pet[]>(this.apiUrl);
+    return this.http.get<Pet[]>(`${this.apiUrl}/pets`);
     // return new Observable(subscriber => {
     //   subscriber.next(ELEMENT_DATA);
     //   subscriber.complete();
@@ -22,7 +26,7 @@ export class PetService {
   }
 
   getPetById(documentId: string): Observable<Pet> {
-    return this.http.get<Pet>(`${this.apiUrl}/${documentId}`);
+    return this.http.get<Pet>(`${this.apiUrl}/pet/${documentId}`);
     // return new Observable(subscriber => {
     //   const pet = ELEMENT_DATA.find(p => p.documentId === documentId);
     //   if (pet) {
@@ -35,7 +39,7 @@ export class PetService {
   }
   
   deletePetById(documentId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${documentId}`);
+    return this.http.delete<void>(`${this.apiUrl}/pet/${documentId}`);
     // return new Observable(subscriber => {
     //   const index = ELEMENT_DATA.findIndex(p => p.documentId === documentId);
     //   if (index !== -1) {
@@ -49,7 +53,7 @@ export class PetService {
   }
 
   updatePetById(documentId: string, updatedPet: Pet): Observable<Pet> {
-    return this.http.put<Pet>(`${this.apiUrl}/${documentId}`, updatedPet);
+    return this.http.put<Pet>(`${this.apiUrl}/pet/${documentId}`, updatedPet);
     // return new Observable(subscriber => {
     //   const index = ELEMENT_DATA.findIndex(p => p.documentId === documentId);
     //   if (index !== -1) {
@@ -69,30 +73,30 @@ const ELEMENT_DATA: Pet[] = [
     documentId: '1',
     name: 'Buddy',
     description: 'A friendly dog',
-    animalType: AnimalType.DOG
+    type: AnimalType.DOG
 },
 {
     documentId: '2',
     name: 'Whiskers',
     description: 'A curious cat',
-    animalType: AnimalType.CAT
+    type: AnimalType.CAT
 },
 {
     documentId: '3',
     name: 'Tweety',
     description: 'A small yellow bird',
-    animalType: AnimalType.BIRD
+    type: AnimalType.BIRD
 },
 {
     documentId: '4',
     name: 'Nemo',
     description: 'A colorful fish',
-    animalType: AnimalType.FISH
+    type: AnimalType.FISH
 },
 {
     documentId: '5',
     name: 'Slinky',
     description: 'A slithery reptile',
-    animalType: AnimalType.REPTILE
+    type: AnimalType.REPTILE
 }
 ];

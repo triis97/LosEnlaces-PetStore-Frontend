@@ -2,7 +2,7 @@ export interface Pet {
     documentId: string;
     name: string;
     description: string;
-    animalType: AnimalType;
+    type: AnimalType;
 }
 
 export enum AnimalType {

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PetService } from '../../services/pet.service';
+import { AnimalType } from '../../model/Pet';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Food {
   value: string;
@@ -21,36 +23,36 @@ interface Food {
   styleUrl: './edit-pet.component.css'
 })
 export class EditPetComponent {
-  foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
-  petName: string | null = null;
+    private _snackBar = inject(MatSnackBar);
+  animalTypes: { value: string, viewValue: string }[] = Object.keys(AnimalType).map(key => ({
+    value: key,
+    viewValue: AnimalType[key as keyof typeof AnimalType]
+  }));
+  documentId: string | null = null;
   headerText = 'Create New Pet';
   submitText = 'Save pet';
   editPetForm!: FormGroup;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private petService: PetService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private petService: PetService) { }
 
   ngOnInit(): void {
-    const petId = this.route.snapshot.paramMap.get('name');
-    
+    this.documentId = this.route.snapshot.paramMap.get('name');
+
     this.editPetForm = this.fb.group({
-      field_1: '',
-      field_2: '',
-      favoriteFood: ['']
+      name: '',
+      description: '',
+      type: ['']
     });
-    if (petId) {
-      console.log('Edit pet ' + petId);
+    if (this.documentId) {
+      console.log('Edit pet ' + this.documentId);
       this.submitText = 'Update pet';
-      this.petService.getPetById(petId).subscribe({
+      this.petService.getPetById(this.documentId).subscribe({
         next: pet => {
           this.headerText = 'Edit pet ' + pet.name;
           this.editPetForm.patchValue({
-            field_1: pet.name,
-            field_2: pet.description,
-            favoriteFood: pet.animalType
+            name: pet.name,
+            description: pet.description,
+            type: pet.type
           });
         },
         error: error => {
@@ -60,7 +62,33 @@ export class EditPetComponent {
     }
 
   }
+
   onSubmit(): void {
     console.log(this.editPetForm.value);
+    if (this.documentId) {
+      this.petService.updatePetById(this.documentId, this.editPetForm.value).subscribe({
+        next: (response) => {
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Error saving pet:', err);
+          this._snackBar.open(`Error saving pet ${err}`, 'Close', {
+            duration: 4000
+          });
+        }
+      });
+    } else {
+      this.petService.savePet(this.editPetForm.value).subscribe({
+        next: (response) => {
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Error saving pet:', err);
+          this._snackBar.open(`Error saving pet ${err}`, 'Close', {
+            duration: 4000
+          });
+        }
+      });
+    }
   }
 }

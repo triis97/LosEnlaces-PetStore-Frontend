@@ -3,18 +3,18 @@
     <div class="flex-center">
         <form [formGroup]="editPetForm" (ngSubmit)="onSubmit()" class="form-container">
             <mat-form-field class="example-full-width">
-                <mat-label>Favorite food</mat-label>
-                <input matInput placeholder="Ex. Pizza" value="Sushi" formControlName="field_1">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Ex. Tweety" formControlName="name">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-                <mat-label>Favorite food</mat-label>
-                <input matInput placeholder="Ex. Pizza" value="Sushi"  formControlName="field_2">
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Ex. A small yellow bird" formControlName="description" rows="3" style="resize: none;"></textarea>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Favorite food</mat-label>
-                <mat-select formControlName="favoriteFood">
-                    @for (food of foods; track food) {
-                    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+                <mat-label>Animal Type</mat-label>
+                <mat-select formControlName="type">
+                    @for (type of animalTypes; track type) {
+                    <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
