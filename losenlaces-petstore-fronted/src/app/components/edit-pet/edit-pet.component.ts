@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -39,9 +39,9 @@ export class EditPetComponent {
     this.documentId = this.route.snapshot.paramMap.get('name');
 
     this.editPetForm = this.fb.group({
-      name: '',
-      description: '',
-      type: ['']
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      type: ['', Validators.required]
     });
     if (this.documentId) {
       console.log('Edit pet ' + this.documentId);
@@ -64,6 +64,12 @@ export class EditPetComponent {
   }
 
   onSubmit(): void {
+    if (this.editPetForm.invalid) {
+      this._snackBar.open('Please fill out all required fields.', 'Close', {
+        duration: 4000
+      });
+      return;
+    }
     console.log(this.editPetForm.value);
     if (this.documentId) {
       this.petService.updatePetById(this.documentId, this.editPetForm.value).subscribe({
