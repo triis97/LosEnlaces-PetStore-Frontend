@@ -9,7 +9,8 @@ import { AnimalType, Pet } from '../model/Pet';
 })
 export class PetService {
 
-  private apiUrl = 'http://localhost:8080/pet-shop';
+  // private apiUrl = 'http://localhost:8080/pet-shop';
+  private apiUrl = 'https://los-enlaces-petstore-190006360457.us-central1.run.app/pet-shop';
 
   constructor(private http: HttpClient) { }
 
