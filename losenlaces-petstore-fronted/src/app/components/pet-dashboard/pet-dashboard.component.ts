@@ -8,10 +8,11 @@ import { PetService } from '../../services/pet.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-pet-dashboard',
-  imports: [MatButtonModule, MatTableModule, MatButtonModule, MatPaginatorModule, MatIconModule, NgIf],
+  imports: [MatButtonModule, MatTableModule, MatButtonModule, MatPaginatorModule, MatIconModule, NgIf, MatProgressSpinnerModule],
   templateUrl: './pet-dashboard.component.html',
   styleUrl: './pet-dashboard.component.css'
 })
@@ -20,6 +21,7 @@ export class PetDashboardComponent implements AfterViewInit {
   displayedColumns: string[] = ['name', 'description', 'animalType', 'actions'];
   dataSource = new MatTableDataSource<Pet>();
   clickedRows = new Set<Pet>()
+  isLoading = true;
 
   constructor(private router: Router, private petService: PetService) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -33,11 +35,13 @@ export class PetDashboardComponent implements AfterViewInit {
     this.petService.getPets().subscribe({
       next: (data: Pet[]) => {
         this.dataSource.data = data;
+        this.isLoading = false;
       },
       error: (error) => {
         this._snackBar.open(`Error retrieving Pets`, 'Close', {
           duration: 4000
         });
+        this.isLoading = false;
       }
     });
   }

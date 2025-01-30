@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "public/losenlaces-petstore-fronted/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
